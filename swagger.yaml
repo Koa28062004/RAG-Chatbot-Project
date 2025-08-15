@@ -1,0 +1,66 @@
+openapi: 3.0.0
+info:
+  title: RAG Chatbot API
+  description: API documentation for the RAG Chatbot with Gemini and ChromaDB.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8501
+    description: Local development server
+paths:
+  /query:
+    post:
+      summary: Submit a query to the chatbot
+      description: Accepts a user query and returns the answer along with related images, tables, and text.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                model_option:
+                  type: string
+                  enum: ["VN Law Embedding", "Gemini Embedding"]
+                  description: The embedding model to use.
+                query:
+                  type: string
+                  description: The user's question.
+              required:
+                - model_option
+                - query
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  answer:
+                    type: string
+                    description: The chatbot's answer.
+                  images:
+                    type: array
+                    items:
+                      type: string
+                    description: List of related image URLs.
+                  tables:
+                    type: array
+                    items:
+                      type: string
+                    description: List of related table file paths.
+                  text:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        content:
+                          type: string
+                          description: The related text content.
+                        source:
+                          type: string
+                          description: The source of the text.
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal server error

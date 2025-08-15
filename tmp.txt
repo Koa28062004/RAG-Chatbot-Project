@@ -1,1 +1,16 @@
-# Rag 
+[Unit]
+Description=Uvicorn FastAPI App for khoaln.aichat
+After=network.target
+
+[Service]
+User=khoaln
+Group=khoaln
+WorkingDirectory=/home/khoaln/RAG-Chatbot
+ExecStart=/home/khoaln/RAG-Chatbot/venv/bin/python3 -u -m uvicorn app:app --host 0.0.0.0 --port 3000
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+
+
